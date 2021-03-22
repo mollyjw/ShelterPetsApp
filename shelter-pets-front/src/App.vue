@@ -1,18 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <header>
+      <b-navbar toggleable="md" type="light" variant="light">
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-brand to="/">Love Pizza</b-navbar-brand>
+        <b-collapse is-nav id="nav-collapse">
+          <b-navbar-nav>
+            <b-nav-item href="#" @click.prevent="login" v-if="!user">Login</b-nav-item>
+            <b-nav-item href="#" @click.prevent="logout" v-else>Logout</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </header>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {  }
 }
 </script>
 

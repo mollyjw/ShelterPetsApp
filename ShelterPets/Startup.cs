@@ -10,39 +10,35 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ShelterPets.Data;
+using ShelterPets.Models;
+
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ShelterPets.Data;
-using ShelterPets.Models;
-
 
 namespace ShelterPets
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ShelterPetsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShelterPetsContext")));
+            services.AddDbContext<ShelterPetsContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ShelterPetsContext")));
             // services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
             services.AddSpaStaticFiles(configuration: options => { options.RootPath = "wwwroot"; });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            // services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShelterPets", Version = "v1" });
-            });
             services.AddCors(options =>
             {
                 options.AddPolicy("VueCorsPolicy", builder =>
@@ -54,33 +50,37 @@ namespace ShelterPets
                     .WithOrigins("https://localhost:5001");
                 });
             });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
                 {
                     options.Authority = Configuration["Okta:Authority"];
                     options.Audience = "api://default";
                 });
-            }      
+            services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ShelterPetsContext dbContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShelterPets v1"));
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("VueCorsPolicy");
 
+            dbContext.Database.EnsureCreated();
+            app.UseAuthentication();
+            app.UseMvc();
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseSpaStaticFiles();
+            app.UseSpa(configuration: builder =>
             {
-                endpoints.MapControllers();
+                if (env.IsDevelopment())
+                {
+                    builder.UseProxyToSpaDevelopmentServer("http://localhost:8080");
+                }
             });
         }
     }
