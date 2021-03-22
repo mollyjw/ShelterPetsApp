@@ -53,7 +53,7 @@ namespace ShelterPets.Controllers
         public string DeleteCat(int id)
         {
             catRepo.Delete(id);
-            return "Cat {catNum} deleted.";
+            return "Cat " + id + " deleted.";
         }
 
         // POST: api/Cats
@@ -61,7 +61,7 @@ namespace ShelterPets.Controllers
         public string AddCat(int catId, string name, string gender, int age, string breed, int shelterId)
         {
             catRepo.Add(catId, name, gender, age, breed, shelterId);
-            return "{name} added!";
+            return name + " added!";
         }
 
     }

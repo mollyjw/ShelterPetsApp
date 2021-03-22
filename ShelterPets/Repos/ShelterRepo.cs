@@ -32,24 +32,30 @@ namespace ShelterPets.Repos
 
         public List<Shelter> GetOne(int shelterNum)
         {
-            string select = @"SELECT * FROM Cats WHERE CatId = shelterNum";
+            var parameters = new { ShelterId = shelterNum };
+            string select = @"SELECT * FROM Shelters WHERE ShelterId = @ShelterId";
 
-            var queryResult = dbConnection.Query<Shelter>(select);
+            var queryResult = dbConnection.Query<Shelter>(select, parameters);
 
             return queryResult.ToList();
         }
 
-        public void Delete(int shelterNum)
+        public void Delete(int id) //WILL NOT DELETE UNTIL CATS FROM SHELTER ARE DELETED?
         {
-            string select = @"DELETE FROM Cats WHERE ShelterId = shelterNum";
-            dbConnection.Execute(select);
+            var parameters = new { ShelterId = id };
+            string nullCats = @"UPDATE cats SET ShelterId = null WHERE ShelterId = @ShelterId";
+                        
+            string select = @"DELETE FROM Shelters WHERE ShelterId = @ShelterId";
+            dbConnection.Execute(nullCats, parameters);
+            dbConnection.Execute(select, parameters);
 
         }
 
         public void Add(int shelterId, string name, string description)
         {
-            string select = @"INSERT INTO Shelters VALUES (ShelterId, Name, Description)";
-            dbConnection.Execute(select);
+            var parameters = new { ShelterId = shelterId, Name = name, Description = description };
+            string select = @"INSERT INTO Shelters VALUES (@ShelterId, @Name, @Description)";
+            dbConnection.Execute(select, parameters);
         }
     }
 }

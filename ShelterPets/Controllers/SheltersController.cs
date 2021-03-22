@@ -52,7 +52,8 @@ namespace ShelterPets.Controllers
         public string DeleteShelter(int id)
         {
             shelterRepo.Delete(id);
-            return "Shelter {shelterNum} deleted.";
+
+            return "Shelter " + id + " deleted.";
         }
 
         // POST: api/Shelters
@@ -60,7 +61,7 @@ namespace ShelterPets.Controllers
         public string AddShelter(int shelterId, string name, string description)
         {
             shelterRepo.Add(shelterId, name, description);
-            return "{name} added!";
+            return name + " added!";
         }
 
     }
