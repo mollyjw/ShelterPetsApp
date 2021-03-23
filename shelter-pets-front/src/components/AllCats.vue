@@ -1,29 +1,50 @@
 <template>
-    <v-main>
-        <h1>Look at all these cats!</h1>
-        <div>
-            <v-card elevation = "8">
-                <v-card-title>{{name}}</v-card-title>
-                <v-card-subtitle> {{age}}, {{gender}} </v-card-subtitle>
-                <v-card-subtitle> A {{breed}} kitty located at Shelter {{shelterId}}</v-card-subtitle>
-                <v-card-actions></v-card-actions>
-
-            </v-card>
-        </div>
-    </v-main>
+  <v-main>
+    <h1>Look at all these cats!</h1>
+    <div class="cards" v-for="cat in cats" v-bind:key="cat.catId">
+      <v-card elevation="8">
+        <v-card-title>Name: {{cat.name}}</v-card-title>
+        <v-card-subtitle> {{cat.age}}, {{cat.gender}} </v-card-subtitle>
+        <v-card-subtitle> A {{cat.breed}} kitty located at Shelter {{cat.shelterId}} </v-card-subtitle>
+        <v-card-actions></v-card-actions>
+      </v-card>
+    </div>
+  </v-main>
 </template>
 
 
 <script>
-import api from '../CatServices';
+import CatService from "../API/CatService";
 
 export default {
-    name: 'AllCats',
-    
-    mounted(){
-      const cats = api.getAll;
-      console.log(cats);
-      this.cats = cats;
-    }
-}
+  props: ["cats"],
+  data() {
+    return {
+      catId: this.catId,
+      name: this.name,
+      gender: this.gender,
+      age: this.age,
+      breed: this.breed,
+      shelterId: this.shelterId,
+    };
+  },
+
+  mounted() {
+    this.getCats();
+  },
+
+  methods: {
+    getCats() {
+      var data = CatService.getAll();
+      console.log(data);
+      return data;
+      // const {data} = await CatService.getOne(id);
+      // this.catId = data.catId;
+      // this.name = data.name;
+      // this.gender = data.gender;
+      // this.age = data.age;
+      // this.shelterId = data.shelterId;
+    },
+  },
+};
 </script>

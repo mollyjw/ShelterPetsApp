@@ -10,15 +10,20 @@
     </v-app-bar>
 
     <v-main>
-      <AllCats />
+      <h1>Welcome to Shelter Pets!</h1> 
+
+      <AllCats/>
+
+
+      <div v-on:click="getStuff()">Button</div>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Header from './components/Header';
-import AllCats from './components/AllCats';
-
+import shelterService from './API/ShelterService';
+import AllCats from './components/AllCats.vue';
 export default {
   name: 'App',
 
@@ -26,7 +31,11 @@ export default {
     Header,
     AllCats
   },
-
+  methods: {
+    getStuff() {
+     shelterService.get()
+    }
+  },
   data: () => ({
     //
   }),
