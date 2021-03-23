@@ -51,7 +51,7 @@ namespace ShelterPets.Repos
         public void Add(int catId, string name, string gender, int age, string breed, int shelterId)
         {
             var parameters = new { CatId = catId, Name = name, Gender = gender, Age = age, Breed = breed, ShelterId = shelterId };
-            string select = @"INSERT INTO Cats VALUES (@CatId, @Name, @Gender, @Age, @Breed, @ShelterId)";
+            string select = @"INSERT INTO Cats (CatId, Name, Gender, Age, Breed, ShelterId) VALUES (@CatId, @Name, @Gender, @Age, @Breed, @ShelterId)";
             dbConnection.Execute(select, parameters);
         }
     }
