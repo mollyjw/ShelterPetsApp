@@ -46,8 +46,9 @@ namespace ShelterPets
                     builder
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials()
-                    .WithOrigins("https://localhost:5001");
+                    //.AllowCredentials()
+                    //.WithOrigins("https://localhost:5001");
+                    .AllowAnyOrigin();
                 });
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
