@@ -43,17 +43,17 @@ namespace ShelterPets.Repos
         public void Delete(int id) //WILL NOT DELETE UNTIL CATS FROM SHELTER ARE DELETED?
         {
             var parameters = new { ShelterId = id };
-            // string nullCats = @"UPDATE cats SET ShelterId = null WHERE ShelterId = @ShelterId";
+            string nullCats = @"UPDATE cats SET ShelterId = null WHERE ShelterId = @ShelterId";
                         
             string select = @"DELETE FROM Shelters WHERE ShelterId = @ShelterId";
-            // dbConnection.Execute(nullCats, parameters);
+            dbConnection.Execute(nullCats, parameters);
             dbConnection.Execute(select, parameters);
 
         }
 
-        public void Add(int shelterId, string name, string description)
+        public void Add(Shelter shelter)
         {
-            var parameters = new { ShelterId = shelterId, Name = name, Description = description };
+            var parameters = new { ShelterId = shelter.ShelterId, Name = shelter.Name, Description = shelter.Description };
             string select = @"INSERT INTO Shelters VALUES (@ShelterId, @Name, @Description)";
             dbConnection.Execute(select, parameters);
         }

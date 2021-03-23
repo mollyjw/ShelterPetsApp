@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ShelterPets.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/shelters")]
     [ApiController]
     public class SheltersController : ControllerBase
     {
@@ -58,10 +58,10 @@ namespace ShelterPets.Controllers
 
         // POST: api/Shelters
         [HttpPost]
-        public string AddShelter(int shelterId, string name, string description)
+        public string AddShelter(Shelter shelter)
         {
-            shelterRepo.Add(shelterId, name, description);
-            return name + " added!";
+            shelterRepo.Add(shelter);
+            return "Shelter added!";
         }
 
     }
