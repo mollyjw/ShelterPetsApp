@@ -19,18 +19,10 @@ import CatService from "../API/CatService";
 export default {
   props: ["cats"],
   data() {
-    return {
-      catId: this.catId,
-      name: this.name,
-      gender: this.gender,
-      age: this.age,
-      breed: this.breed,
-      shelterId: this.shelterId,
-    };
+    return {}
   },
 
   mounted() {
-    this.getCats();
   },
 
   methods: {

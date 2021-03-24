@@ -12,10 +12,10 @@
     <v-main>
       <h1>Welcome to Shelter Pets!</h1> 
 
-      <AllCats/>
+      <AllCats :cats="cats"/>
 
 
-      <div v-on:click="getStuff()">Button</div>
+      <div v-on:click="updateCatsList()">Button</div>
     </v-main>
   </v-app>
 </template>
@@ -23,6 +23,8 @@
 <script>
 import Header from './components/Header';
 import shelterService from './API/ShelterService';
+import catService from './API/CatService';
+
 import AllCats from './components/AllCats.vue';
 export default {
   name: 'App',
@@ -32,12 +34,21 @@ export default {
     AllCats
   },
   methods: {
+    updateCatsList() {
+      this.cats = catService.getAll();
+      console.log(this.cats);
+    },
     getStuff() {
-     shelterService.get()
+      shelterService.get();
     }
   },
-  data: () => ({
-    //
-  }),
-};
+  mounted() {
+    this.updateCatsList();
+  },
+  data:function() {
+    return {
+      cats: []
+    };
+  }
+}
 </script>
