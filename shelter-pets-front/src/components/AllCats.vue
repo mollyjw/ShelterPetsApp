@@ -4,8 +4,10 @@
     <div class="cards" 
           v-for="cat in cats" 
           v-bind:key="cat.catId">
-      <v-card elevation="8" v-on:click="getThisCat(cat.catId)">
-        <v-card-title> {{ cat.name }}</v-card-title>
+      <v-card elevation="8">
+        <v-card-title> 
+          <router-link :to="{name: 'Cat', params: {catId: cat.catId} }">{{ cat.name }}</router-link>
+        </v-card-title>
         <v-card-subtitle>
           {{ cat.age }}-year-old {{ cat.gender }}
         </v-card-subtitle>
@@ -46,7 +48,7 @@ export default {
     getThisCat(id) {
       router.push({ 
         name: 'Cat',
-        params: id
+        params: { catId: this.catId}
       })
       CatService.getOne(id).then((cat) => {
         this.cat = cat[0];
@@ -59,3 +61,5 @@ export default {
 
 <style scoped>
 </style>
+
+v-on:click="getThisCat(cat.catId)"

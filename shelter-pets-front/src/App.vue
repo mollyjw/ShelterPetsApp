@@ -11,9 +11,11 @@
 
 <script>
 import Header from "./components/Header"
+import Router from "./router/index"
 
 export default {
   name: 'App',
+  router: Router,
   components: {
       Header
   }

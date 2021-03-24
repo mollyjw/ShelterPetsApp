@@ -18,7 +18,7 @@ const routes = [
         component: AllCats,
         children: [
           {
-            path: '/${id}', 
+            path: '/:catId}', 
             name: 'Cat',
             component: Cat,
             // params: { id: int}

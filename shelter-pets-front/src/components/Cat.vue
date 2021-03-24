@@ -1,6 +1,7 @@
 <template>
   <v-main>
-    <div class="cards" >
+    <div> Cat {{$route.params.catId}}</div>
+    <div class="singlecat">
       <v-card elevation="8">
         <v-card-title> {{ cat.name }}</v-card-title>
         <v-card-subtitle> {{ cat.age }}-year-old {{ cat.gender }} </v-card-subtitle>
@@ -25,7 +26,7 @@ export default {
   },
 
   mounted() {
-    this.getCatInfo(2);
+    this.getCatInfo();
   },
 
   methods: {
