@@ -1,43 +1,21 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+  <div class="app">
+    <div class="nav">
       <Header />
-    
-    </v-app-bar>
-
-    <v-main>
-      <h1>Welcome to Shelter Pets!</h1> 
-
-      <AllCats/>
-
-
-      <div v-on:click="getStuff()">Button</div>
-    </v-main>
-  </v-app>
+      <router-link to="/"> Home </router-link> | 
+      <router-link to="/cats">Cats</router-link> |
+    </div>
+    <router-view />
+  </div>
 </template>
 
 <script>
-import Header from './components/Header';
-import shelterService from './API/ShelterService';
-import AllCats from './components/AllCats.vue';
+import Header from "./components/Header"
+
 export default {
   name: 'App',
-
   components: {
-    Header,
-    AllCats
-  },
-  methods: {
-    getStuff() {
-     shelterService.get()
-    }
-  },
-  data: () => ({
-    //
-  }),
-};
+      Header
+  }
+}
 </script>

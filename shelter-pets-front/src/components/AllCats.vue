@@ -1,11 +1,17 @@
 <template>
   <v-main>
     <h1>Look at all these cats!</h1>
-    <div class="cards" v-for="cat in cats" v-bind:key="cat.catId">
-      <v-card elevation="8">
-        <v-card-title>Name: {{cat.name}}</v-card-title>
-        <v-card-subtitle> {{cat.age}}, {{cat.gender}} </v-card-subtitle>
-        <v-card-subtitle> A {{cat.breed}} kitty located at Shelter {{cat.shelterId}} </v-card-subtitle>
+    <div class="cards" 
+          v-for="cat in cats" 
+          v-bind:key="cat.catId">
+      <v-card elevation="8" v-on:click="getThisCat(cat.catId)">
+        <v-card-title> {{ cat.name }}</v-card-title>
+        <v-card-subtitle>
+          {{ cat.age }}-year-old {{ cat.gender }}
+        </v-card-subtitle>
+        <v-card-subtitle>
+          A {{ cat.breed }} kitty located at Shelter {{ cat.shelterId }}
+        </v-card-subtitle>
         <v-card-actions></v-card-actions>
       </v-card>
     </div>
@@ -15,17 +21,14 @@
 
 <script>
 import CatService from "../API/CatService";
+import router from "../router/index"
+
 
 export default {
-  props: ["cats"],
-  data() {
+  name: 'AllCats',
+  data: function () {
     return {
-      catId: this.catId,
-      name: this.name,
-      gender: this.gender,
-      age: this.age,
-      breed: this.breed,
-      shelterId: this.shelterId,
+      cats: [],
     };
   },
 
@@ -35,16 +38,24 @@ export default {
 
   methods: {
     getCats() {
-      var data = CatService.getAll();
-      console.log(data);
-      return data;
-      // const {data} = await CatService.getOne(id);
-      // this.catId = data.catId;
-      // this.name = data.name;
-      // this.gender = data.gender;
-      // this.age = data.age;
-      // this.shelterId = data.shelterId;
+      CatService.getAll().then((cats) => {
+        this.cats = cats;
+        // console.log(this.cats);
+      });
+    },
+    getThisCat(id) {
+      router.push({ 
+        name: 'Cat',
+        params: id
+      })
+      CatService.getOne(id).then((cat) => {
+        this.cat = cat[0];
+        console.log(this.cat);
+      })
     },
   },
 };
 </script>
+
+<style scoped>
+</style>

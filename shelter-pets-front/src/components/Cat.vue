@@ -1,46 +1,40 @@
 <template>
-  <v-card elevation="8">
-    <v-card-title>Cat Name</v-card-title>
-    <v-card-subtitle> Age, Gender </v-card-subtitle>
-    <v-card-subtitle>
-      A breed kitty located at Shelter #
-    </v-card-subtitle>
-    <v-card-actions></v-card-actions>
-  </v-card>
+  <v-main>
+    <div class="cards" >
+      <v-card elevation="8">
+        <v-card-title> {{ cat.name }}</v-card-title>
+        <v-card-subtitle> {{ cat.age }}-year-old {{ cat.gender }} </v-card-subtitle>
+        <v-card-subtitle>
+          A {{ cat.breed }} kitty located at Shelter {{ cat.shelterId }}
+        </v-card-subtitle>
+        <v-card-actions></v-card-actions>
+      </v-card>
+    </div>
+  </v-main>
 </template>
 
 <script>
-import CatService from '../API/CatService';
-// const CatService = Service.get("cats");
+import CatService from "../API/CatService";
 
 export default {
-    props: ["cats"],
-    data() {
-        return {
-            catId: this.catId,
-            name: this.name,
-            gender: this.gender,
-            age: this.age,
-            breed: this.breed,
-            shelterId: this.shelterId
-        }
-    },
-    
-    mounted(){
-     this.getCatInfo(this.cats.catId)
-    },
+  name: 'OneCat',
+  data: function() {
+    return {
+      cat: {}
+    };
+  },
 
-    methods: {
-        getCatInfo(id) {
-            CatService.getOne(id);
-            console.log(CatService.getOne(id))
-            // const {data} = await CatService.getOne(id);
-            // this.catId = data.catId;
-            // this.name = data.name;
-            // this.gender = data.gender;
-            // this.age = data.age;
-            // this.shelterId = data.shelterId; 
-        }
-    }
-}
+  mounted() {
+    this.getCatInfo(2);
+  },
+
+  methods: {
+    getCatInfo(id) {
+      CatService.getOne(id).then(cat => {
+        this.cat = cat[0];
+      console.log(this.cat);
+      })
+    },
+  },
+};
 </script>
