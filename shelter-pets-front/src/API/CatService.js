@@ -8,8 +8,8 @@ export default {
     getOne(id) {
         return Client.get(`${resource}/${id}`).then(response => response.data);
     },
-    create(payload) {
-        return Client.post(`${resource}`, payload);
+    create(cat) {
+        return Client.post(`${resource}`, cat);
     },
     
     delete(id) {

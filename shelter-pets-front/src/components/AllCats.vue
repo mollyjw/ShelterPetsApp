@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <h1>Look at all these cats!</h1>
-    <div class="cards" 
+    <v-container 
           v-for="cat in cats" 
           v-bind:key="cat.catId">
       <v-card elevation="8">
@@ -16,6 +16,9 @@
         </v-card-subtitle>
         <v-card-actions></v-card-actions>
       </v-card>
+    </v-container>
+    <div class="add">
+      <router-link :to="{name: 'AddCat'}">Add a Cat</router-link>
     </div>
   </v-main>
 </template>
@@ -62,4 +65,3 @@ export default {
 <style scoped>
 </style>
 
-v-on:click="getThisCat(cat.catId)"

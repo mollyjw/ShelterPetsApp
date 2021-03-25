@@ -1,12 +1,12 @@
 <template>
+  <v-app class="">
   <div class="app">
     <div class="nav">
       <Header />
-      <router-link to="/"> Home </router-link> | 
-      <router-link to="/cats">Cats</router-link> |
     </div>
     <router-view />
   </div>
+  </v-app>
 </template>
 
 <script>
