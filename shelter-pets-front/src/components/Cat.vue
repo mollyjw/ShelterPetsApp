@@ -71,3 +71,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .cardTitle {
+    font-size: xxx-large;
+    text-align: center;
+    color: rgba(0,0,0, 1) !important;
+    padding-top: 2%;
+  }
+
+  .paragraph {
+    color: rgba(0,0,0, 1) !important;    
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 2rem;
+  }
+</style>
