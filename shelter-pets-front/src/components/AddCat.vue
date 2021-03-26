@@ -5,7 +5,7 @@
       <v-layout>
         <v-flex xs12 md6>
           <v-text-field
-            v-model="cat.catId"
+            v-model.number="cat.catId"
             label="Cat's ID"
             :rules="idRules"
             required
@@ -38,7 +38,7 @@
           <v-select
             v-model="cat.gender"
             :items="genders"
-            :rules="[(v) => !!v || 'Item is required']"
+            :rules="[(v) => !!v || 'Gender is required']"
             label="Gender"
             required
             style="margin: 2% 4%"
@@ -67,7 +67,7 @@
       </v-layout>
       <v-layout>
         <v-flex xs12 md6 text-center>
-          <v-btn v-on:click="addCat(cat)" :disabled="error" color="accent" style="margin: 2% 4%"
+          <v-btn v-on:click="addCat(cat)" color="accent" style="margin: 2% 4%"
             >Add the Kitty
           </v-btn>
         </v-flex>
@@ -93,7 +93,7 @@ export default {
       error: false,
       idRules: [
         (v) => !!v || "ID is required",
-        (v) => (v && v.type == Number) || "ID must be a number",
+        // (v) => (v && typeof[v] == Number) || "ID must be a number",
       ],
       nameRules: [
         (v) => !!v || "Name is required",
@@ -125,7 +125,7 @@ export default {
       if (this.$refs.form.validate()) {
         CatService.create(cat);
         this.resetForm();
-      }
+      } 
     }
   },
 };
