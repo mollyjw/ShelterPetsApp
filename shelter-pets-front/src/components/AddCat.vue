@@ -1,68 +1,132 @@
 <template>
-  <v-main>
-    <h1>Add a Kitty!</h1>
-    <div class="form">
-      <label for="cat.catId">
-        Cat's ID: <input v-model="cat.catId" type="text" id="catId" />
-      </label>
-      <label for="cat.name">
-        Cat's Name: <input v-model="cat.name" type="text" id="name" />
-      </label>
-      <label for="cat.age">
-        Age: <input v-model="cat.age" type="text" id="age" />
-      </label>
-      <label for="cat.gender">
-        Gender: <input v-model="cat.gender" type="text" id="gender" />
-      </label>
-      <label for="cat.breed">
-        Breed and Coloring: <input v-model="cat.breed" type="text" id="breed" />
-      </label>
-      <label for="cat.shelterId">
-        Shelter: <input v-model="cat.shelterId" type="text" id="shelterId" />
-      </label>
-      <button v-on:click="addCat(cat)">Add the Kitty</button>
-      <span v-show="error" class="error"
-        >Oopsie! ID, Name, Gender, and Shelter are Required.</span
-      >
-    </div>
-  </v-main>
+  <v-form ref="form" v-model="error" lazy-validation>
+    <v-container>
+      <h1 text-center>Add a Cat</h1>
+      <v-layout>
+        <v-flex xs12 md6>
+          <v-text-field
+            v-model="cat.catId"
+            label="Cat's ID"
+            :rules="idRules"
+            required
+            style="margin: 2% 4%"
+          >
+          </v-text-field>
+        </v-flex>
+
+        <v-flex xs12 md6>
+          <v-text-field
+            v-model="cat.name"
+            label="Cat's Name"
+            :rules="nameRules"
+            required
+            style="margin: 2% 4%"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+
+      <v-layout>
+        <v-flex xs12 md6>
+          <v-text-field 
+            v-model="cat.age" 
+            label="Age" 
+            style="margin: 2% 4%"
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex>
+          <v-select
+            v-model="cat.gender"
+            :items="genders"
+            :rules="[(v) => !!v || 'Item is required']"
+            label="Gender"
+            required
+            style="margin: 2% 4%"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+
+      <v-layout>
+        <v-flex xs12 md6>
+          <v-text-field
+            v-model="cat.breed"
+            label="Breed and Coloring"
+            style="margin: 2% 4%"
+          ></v-text-field>
+        </v-flex>
+
+        <v-flex xs12 md6>
+          <v-text-field
+            v-model="cat.shelterId"
+            label="Shelter ID"
+            :rules="shelterRules"
+            required
+            style="margin: 2% 4%"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout>
+        <v-flex xs12 md6 text-center>
+          <v-btn v-on:click="addCat(cat)" :disabled="error" color="accent" style="margin: 2% 4%"
+            >Add the Kitty
+          </v-btn>
+        </v-flex>
+
+        <v-flex xs12 md6 text-center>
+          <v-btn v-on:click="resetForm()" color="accent" style="margin: 2% 4%"
+            >Reset Form
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-form>
 </template>
+
 
 <script>
 import CatService from "../API/CatService";
 
 export default {
-  name: 'AddCat',
+  name: "AddCat",
   data: function () {
     return {
       error: false,
+      idRules: [
+        (v) => !!v || "ID is required",
+        (v) => (v && v.type == Number) || "ID must be a number",
+      ],
+      nameRules: [
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length >= 2) || "Name must be at least 2 characters",
+      ],
+      gender: null,
+      genders: ["Male", "Female", "Unsure"],
+
+      shelterRules: [
+        (v) => !!v || "Shelter ID is required",
+        (v) => (v && v == 1) || v == 2 || "Shelter ID must be 1 or 2",
+      ],
       cat: {
-        catId: '',
-        name: '',
-        age: '',
-        gender: '',
-        breed: '',
-        shelterId: ''
-      }
+        catId: "",
+        name: "",
+        age: "",
+        gender: "",
+        breed: "",
+        shelterId: "",
+      },
     };
   },
 
   methods: {
-    addCat(cat) {
-       if (cat.catId === '' || cat.name === '' || cat.gender === '' || cat.shelterId === '') {
-                this.error = true;
-       } else {
-            CatService.create(cat)
-            cat.catId = '',
-            cat.name = '',
-            cat.age = '',
-            cat.gender = '',
-            cat.breed = '',
-            cat.shelterId = ''
-        }
-      
+    resetForm() {
+      this.$refs.form.reset();
     },
-   
+    addCat(cat) {
+      if (this.$refs.form.validate()) {
+        CatService.create(cat);
+        this.resetForm();
+      }
+    }
   },
 };
 </script>

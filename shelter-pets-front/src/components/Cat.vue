@@ -1,7 +1,7 @@
 <template>
   <v-main>
     <div class="singlecat"> 
-      <v-card elevation="8" color="secondary">
+      <v-card elevation="8" background="secondary">
         <v-card-title> {{ cat.name }}</v-card-title>
         <v-card-subtitle> {{ cat.age }}-year-old {{ cat.gender }} </v-card-subtitle>
         <v-card-subtitle>
